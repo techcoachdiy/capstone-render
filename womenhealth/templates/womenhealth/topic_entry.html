@@ -1,0 +1,18 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+<h2>Create Topics</h2>
+
+<!-- <form method="post" class="container my-5"> -->
+<form method="post">
+    {% csrf_token %}
+    <div class="topic-input">
+        {{ entered_topic.as_p }}
+    </div>
+    <button type="submit" class="btn btn-primary">Create a Topic</button>
+    <!-- <input class="btn btn-primary" type="submit" value="Create a Topic"> -->
+    
+</form>
+
+<!-- <a href="{% url 'index' %}">Back to Topics</a> -->
+{% endblock %}

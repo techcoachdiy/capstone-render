@@ -1,0 +1,45 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+<h2> Pending Revisions </h2>
+
+{% if pending_revisions %}
+<ul>
+    {% for pr in pending_revisions %}
+    <li style="margin-bottom: 25px;">
+        <strong> {{ pr.entry.title }}</strong><br>
+        Topic: {{ pr.entry.topic.name }} <br>
+        Submitted by: {{ pr.editor.username }} <br>
+        Date: {{ pr.created_at }}
+        <strong>Proposed Content: </strong><br>
+        {{ pr.content|linebreaks }}
+        
+        <div style = "margin-top: 10px;">
+            <a href="{% url 'entry_detail' pr.entry.topic.slug pr.entry.slug %}">
+                View Current Article
+            </a>
+            <form action="{% url 'review_revision' pr.id %}"
+                method="post"
+                style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" name="action" value="approve">
+                    Approve
+                </button>
+            </form>
+            <form action="{% url 'review_revision' pr.id %}"
+                method="post"
+                style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" name="action" value="reject">
+                    Reject
+                </button>
+            </form>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>No pending revisions.</p>
+{% endif %}
+
+{% endblock %}

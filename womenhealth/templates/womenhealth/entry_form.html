@@ -1,0 +1,105 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+<h2> {{ form_title }} for {{ topic.name }}</h2>
+
+<form method="post" class="entry-form">
+    {% csrf_token %}
+
+    <!--{{ form.as_p}} -->
+    <p>
+        {{ form.title.label_tag}}
+        {{ form.title }}
+        {{ form.title.errors }}
+    </p>
+    <p>
+        {{ form.content.label_tag }}
+        {{ form.content }}
+        {{ form.content.errors }}
+    </p>
+    <!-- Markdown help text -->
+    <p class="help-text text-muted">
+        Markdown supported: headings (#, ##, ###), lists (- or *), bold (**text**), links([text](url)), etc.
+    </p>
+    
+    <div class="d-grid gap-2">
+        <!-- Preview button -->
+        <button type="button" id="preview-btn" class="btn btn-outline-secondary">Preview</button>
+        <div id="preview-area" style="border:1px solid #ccc; padding: 10px; display:none;"></div>
+        <p>
+            {{ form.food_components.label_tag }}
+            {{ form.food_components }}
+            {{ form.food_components.errors }}
+            <small class="text-muted">
+                Select 3-5 components that best descrebe this article.
+            </small>
+        </p>
+        <button type="submit" class="btn btn-primary">
+            {% if entry %}
+                Save Changes
+            {% else %}
+                Create Article
+            {% endif %}
+        </button>
+
+        <a href = "{% url 'topic_page' topic.slug %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+{% if not user.is_staff %}
+<p class="text-muted mt-3">
+    <em>
+        Your article will be submitted for review before being published.
+    </em>
+</p>
+{% endif %}
+
+<!-- JS for Markdown live preview -->
+ <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+ <script>
+    const previewBtn = document.getElementById("preview-btn");
+    const contentField = document.getElementById("id_content");
+    const previewArea = document.getElementById("preview-area");
+
+    previewBtn.addEventListener("click", () => {
+        const markdownText = contentField.value;
+        const html = marked.parse(markdownText);
+        previewArea.innerHTML = html;
+
+        //Toggle visibility
+        if (previewArea.style.display === "none" || previewArea.style.display === "") {
+            previewArea.style.display = "block";
+            previewBtn.textContent = "Hide Preview";
+        } else {
+            previewArea.style.display = "none";
+            previewBtn.textContent = "Preview";
+        }
+    });
+ </script>
+
+<script>
+$(document).ready(function() {
+
+    $('.foodcomponent-select').select2({
+        placeholder: "Select 3–5 components",
+        maximumSelectionLength: 5,
+        width: "100%"
+    });
+
+});
+</script>
+
+ <style>
+    /* Optional styling for preview area */
+    #preview-area {
+        background: #f9f9f9;
+        border-radius: 4px;
+    }
+    #preview-area h1, #preview-area h2, #preview-area h3 {
+        margin-top: 1em;
+    }
+    #preview-area ul, #preview-area ol {
+        margin-left: 20px;
+    }
+ </style>
+{% endblock %}

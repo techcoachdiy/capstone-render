@@ -1,0 +1,16 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+<h2> {{ title }} </h2>
+
+<!-- <form method="post" class="container my-5"> -->
+<form method="post">
+    {% csrf_token %}
+    <div class="topic-input">
+        {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ button_text }}</button>  
+</form>
+
+<a href="{% url 'index' %}">Cancel</a> 
+{% endblock %}

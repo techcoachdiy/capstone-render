@@ -1,0 +1,31 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+<h2>Seed Food Components</h2>
+<p> Enter one component per line. You can add multiple at once.</p>
+<!-- <form method="post" class="container my-5"> -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group mb-3">
+        {{ form.names.label_tag}}
+        {{ form.names }}
+        {% if form.names.help_text %}
+            <small class="form-text text-muted">{{ form.names.help_text }}</small>
+        {% endif %}
+        {% for error in form.names.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %} 
+    </div> 
+    <div class="form-check mb-3">
+        {{ form.is_approved }}
+        {{ form.is_approved.label_tag}}
+        {% for error in form.is_approved.error %}
+            <div class="text-danger"> {{ error }}</div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Seed Food Components</button>
+    <a href="{% url 'index' %}" class="btn bun-secondary">Cancel</a>
+</form>
+
+{% endblock %}

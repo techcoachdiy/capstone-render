@@ -1,0 +1,99 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+<div style = "display: flex; gap: 2rem;">
+    <!-- Sidebar -->
+     <div style="width: 25%; padding-right:0px;">
+        <h3> {{ topic.name|upper }}</h3>
+        {% if entry %}
+        <ul>
+            {% for e in entries %} 
+            <li>
+                <a href="{% url 'entry_detail' e.topic.slug e.slug %}">{{ e.title }}</a>
+            </li>
+            {% empty %}
+            <li><em>No articles yet. </em></li>
+            {% endfor %}
+        </ul>
+        
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'create_entry' topic.slug %}">
+            + New Article
+        </a>
+        {% endif %}
+    </div>
+
+     <!-- main content-->
+    <div style="width: 75%;">
+    {% if entry %}
+        <h2> {{ entry.title }}</h2>
+        <p style="color: gray; font-size: 14px;">
+            By {{ entry.created_by.username }} | {{ entry.created_at|date:"M d, Y"}}
+        </p>
+    {% else %}
+        <h2>{{ topic.name|title }}</h2>
+    {% endif %}
+      <hr>
+        {% if entry %}
+        <div class="entry-content">
+            {{ entry_html|safe }}
+        </div>
+        
+        {% else %}
+            <p><em>This article has no content yet.</em></p>
+        {% endif %}
+
+        <hr>
+        <h5> Key Food Components </h5>
+        {% if entry.food_components.all %}
+            <div class="components-row">
+                {% for component in entry.food_components.all %}
+                    <span class="component-tag"> {{ component.name}} </span>
+                    {% if not forloop.last %}, {% endif %}
+                    
+                {% endfor %}
+            </div>
+        {% else %}
+            <p> <em>No components listed for this article.</em></p>
+        {% endif %}
+        <hr>
+        {% if user.is_authenticated %}
+        {% if entry %}
+            <a href="{% url 'submit_edit' topic_slug=entry.topic.slug entry_slug=entry.slug %}">Edit this article</a>
+        {% endif %}
+        {% endif %}
+
+        {% if user.is_staff %}
+            <p><em>Staff can edit directly without submitting a revision.</em></p>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<h4>Recipe Listings</h4>
+    
+<div class="recipelist-grid">
+    {% for recipe in recipes %}
+    <div class="recipelist">
+       <h3> {{recipe.title }} </h3>
+    {% if recipe.image_url %}
+        <img src="{{ recipe.image_url}}">
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
+
+    {% if user == recipe.user %}
+        <a class="edit margin-right" href="{% url 'editrecipe' recipe.id %}"> Edit</a>
+    {% endif %}
+        <p style="color: gray; font-size: 14px; margin-bottom: 0.5rem;">
+            By {{ recipe.user.username }} | {{ recipe.created_at|date:"M d, Y" }}
+        </p>
+        <p style="font-weight: bold; margin-top: 0.5rem;"> Description </p>
+        <p> {{ recipe.description|linebreaks }}</p>
+        <p style="font-weight: bold;"> {{ recipe.food_component }}</p>
+    </div>
+
+    {% endfor %}
+</div>
+{% endblock %}

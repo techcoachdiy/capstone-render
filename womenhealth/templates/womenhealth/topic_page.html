@@ -1,0 +1,14 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+    <h1>Articles under {{ topic.name }}</h1>
+    <ul>
+    {% for entry in entries %}
+        <li><a href="{% url 'entry_detail' entry.slug %}">{{entry.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+    {% if user.is_staff %}
+        <a href="{% url 'create_entry' topic.slug %}">Create new article</a>"
+    {%endif %}
+{% endblock %}

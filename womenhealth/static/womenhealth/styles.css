@@ -1,0 +1,164 @@
+.body {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 0px; 
+}
+.site-title {
+    background-color: #A51C30;
+    color: white;
+    padding: 5px 10px;
+    font-weight:bold;
+    font-size: 1.5rem;
+    border-radius: 0px;
+}
+.nav-link {
+    font-weight: bold;
+    color: black;
+}
+.topics-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.topic-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    padding: 0 20px; /* horizontal padding */
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    cursor: pointer;
+    white-space: nowrap; /* prevent text from breaking lines */
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    font-size: 1rem;
+}
+.topic-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: #e9ecef;
+}
+.topic-box a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+/* Optional: responsive shrinking on very small screen */
+@media (max-width: 480px) {
+    .topic-box {
+        padding: 0 10px;
+        font-size: 0.9rem;
+    }
+}
+.topic-input {
+    background-color: yellow;
+    max-width: 400px;
+}
+.content-box {
+    background: #f9f9f9;
+
+}
+.entry-form p input,
+.entry-form p textarea {
+    max-width: 800px !important;
+    width: 100% !important; 
+}
+.components-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+.component-tag {
+    display: inline-block;
+    background-color: #e0f2f1; 
+    color: #00695c;
+    padding: 4px 10px;
+    border-radius: 0px;
+    font-size: 0.9em;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 0.5rem; /* spacing between input box and button */
+    align-items: end;
+    margin-bottom: 1rem;
+}
+.form-box {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 0rem;
+}
+textarea.form-box {
+    height: auto;
+    padding: 0.6rem;
+    resize: none;
+}
+/*.form-row .btn {
+    width: 100px;
+    flex-shrink: 0;
+}*/
+textarea {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.newpost-box {
+    margin-left: 0px;
+    width: 50%;
+    /* margin-bottom: 0px; */
+}
+.recipelist-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 1.5rem; 
+    padding: 2rem;
+    max-width: 100%;
+}
+.recipelist {
+    background: #e6e1f9;
+    padding: 1rem;
+    border-radius: 8px;
+    max-width:100%;
+    width:100%;
+}
+.recipelist img {
+    max-width: 100%;
+    width: 100%;
+    height:180px;
+    object-fit:cover;
+    border-radius: 4px;
+}
+.edit {
+    display: inline-block;
+    background-color: #26a69a;
+    color: white;
+    border-radius:4px;
+    padding: 0.2rem 0.2rem;
+    text-decoration:none;
+    margin-top: 0.5rem;
+}
+.edit:hover {
+    background-color: #1e857c;
+    color: white;
+}
+.margin-right {
+    margin-right: 20px;
+}
+.recipelist h3{
+    margin-top:0;
+    font-size:1.2rem;
+}
+.recipelist p{
+    font-size: 0.9rem;
+}

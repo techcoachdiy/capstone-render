@@ -1,0 +1,26 @@
+{% extends "womenhealth/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h2>Edit Article: {{ entry.title}}</h2>
+
+{% if user.is_staff %}
+    <p><strong>Staff editing:</strong> Your changes will update the article directly</p>
+{% else %}
+    <p>Your changes will be submitted for review and must be approved before appearing.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label for="content"><strong>Content:</strong></label>
+    <br>
+    <textarea name="content" id="content" row="15" col="100" placeholde="Type the article content here...">
+        {% if user.is_staff %}{{ entry.content }} {% endif %}
+    </textarea>
+    <br><br>
+    <button type="submit">Save</button>
+</form>
+
+<a href="{% url 'entry_detail' topic_slug=entry.topic.slug entry_slug=entry.slug%}">Back to Article</a>
+{% endblock %}

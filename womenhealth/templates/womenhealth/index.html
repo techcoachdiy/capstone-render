@@ -1,0 +1,48 @@
+{% extends "womenhealth/layout.html" %}
+
+{% block body %}
+    <h2>Topics</h2>
+    {% if user.is_staff%}
+        <a href="{% url 'topic_entry' %}">+ New Topic </a>
+        <br>
+        <a href="{% url 'bulk_foodcomponent_entry' %}">+ Seed Food Components</a>
+    {% endif %}
+    
+    <div class = "container my-5">
+        <div class="topics-flex">
+            {% for topic in topics %}
+                <div class="topic-box"><a href="{% url 'topic_page' topic.slug %}">{{ topic.name|upper }}</a> </div>
+                <!-- <div class="topic-box"><a href="{% url 'topic_page' topic.slug %}">{{ topic.name }}</a> </div> --->
+            {% endfor %}
+        </div>
+    </div>
+
+    <hr>
+    <h2>Recipe Listings</h2>
+    {% if user.is_authenticated %}
+        <a href="{% url 'recipe_entry' %}">+ Recipe </a>
+    {% endif %}
+    <div class="recipelist-grid">
+    {% for recipe in recipes %}
+    <div class="recipelist">
+       <h3> {{recipe.title }} </h3>
+    {% if recipe.image_url %}
+        <img src="{{ recipe.image_url}}">
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
+
+    {% if user == recipe.user %}
+        <a class="edit margin-right" href="{% url 'editrecipe' recipe.id %}"> Edit</a>
+    {% endif %}
+        <p style="color: gray; font-size: 14px; margin-bottom: 0.5rem;">
+            By {{ recipe.user.username }} | {{ recipe.created_at|date:"M d, Y" }}
+        </p>
+        <p style="font-weight: bold; margin-bottom:0px;"> Description </p>
+        <p style="margin-top: 0px;"> {{ recipe.description|linebreaks }}</p>
+        <p style="font-weight: bold;"> {{ recipe.foodcomponent }}</p>
+    </div>
+
+    {% endfor %}
+    </div>
+{% endblock %}
