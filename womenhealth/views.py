@@ -27,7 +27,16 @@ class LogoutView(DjangoLogoutView):
 
 User = get_user_model()
 
+def is_staff(user):
+    return user.is_staff
+
+@user_passes_test(is_staff)
 def register(request):
+    if not is_staff(request.user):
+        return render(request, "womenhealth/register.html",{
+            "message": "You are not allowed to access this page."
+        })
+        
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -43,15 +52,17 @@ def register(request):
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
-            user.save()
+            #user.save()
         except IntegrityError:
             return render(request, "womenhealth/register.html", {
                 "message": "Username already taken."
             })
-        login(request, user)
-        return redirect("index")
-    else:
-        return render(request, "womenhealth/register.html")
+        #login(request, user)
+        return render(request, "womenhealth/register.html", {
+            "message": "User created successfully."
+        })
+
+    return render(request, "womenhealth/register.html")
 
 #list all topics & recipes
 def index(request):
@@ -78,9 +89,6 @@ def topic_page(request, topic_slug):
         "entry": main_entry,
         "entry_html": main_entry_html
     })
-
-def is_staff(user):
-    return user.is_staff
 
 @login_required
 @user_passes_test(is_staff)
