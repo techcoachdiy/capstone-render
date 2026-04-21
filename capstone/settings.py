@@ -33,7 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "capstone-render-vrom.onrender.com",
-    ".onrender.com"
+    ".onrender.com",
+    "127.0.0.1",
+    "localhost",
 ]
 
 

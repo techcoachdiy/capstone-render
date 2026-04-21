@@ -36,9 +36,9 @@ def register(request):
     if not request.user.is_authenticated or not request.user.is_staff:
         messages.error(request, "Registration is disabled. Please contact the administrator.")
         return redirect("login")
-        
+
     if request.method == "POST":
-        username = request.POST.get()"username")
+        username = request.POST.get("username")
         email = request.POST.get("email")
 
         # Ensure password matches confirmation
