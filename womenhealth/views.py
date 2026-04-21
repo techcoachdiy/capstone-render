@@ -13,6 +13,7 @@ from .models import Topic, Entry, Revision, FoodComponent, Recipe
 from .forms import TopicForm, EntryForm, RecipeForm, BulkFoodComponentForm
 from django.views.decorators.http import require_POST
 import markdown
+from django.contrib import messages
 
 # Create your views here.
 class LoginView(DjangoLoginView):
@@ -30,37 +31,37 @@ User = get_user_model()
 def is_staff(user):
     return user.is_staff
 
-@user_passes_test(is_staff)
-def register(request):
-    if not is_staff(request.user):
-        return render(request, "womenhealth/register.html",{
-            "message": "You are not allowed to access this page."
-        })
+#@user_passes_test(is_staff, login_url="login")
+def register(request):  
+    if not request.user.is_authenticated or not request.user.is_staff:
+        messages.error(request, "Registration is disabled. Please contact the administrator.")
+        return redirect("login")
         
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
+        username = request.POST.get()"username")
+        email = request.POST.get("email")
 
         # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
+        password = request.POST.get("password")
+        confirmation = request.POST.get("confirmation")
+
+        if not username or not email or not password or not confirmation:
+            messages.error(request, "All fields are required.")
+            return redirect("register")
+
         if password != confirmation:
-            return render(request, "womenhealth/register.html", {
-                "message": "Passwords must match."
-            })
+            messages.error(request, "Passwords must match.")
+            return redirect("register")
 
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
-            #user.save()
+            messages.success(request, "User created successfully.")
+            return redirect("register")
+
         except IntegrityError:
-            return render(request, "womenhealth/register.html", {
-                "message": "Username already taken."
-            })
-        #login(request, user)
-        return render(request, "womenhealth/register.html", {
-            "message": "User created successfully."
-        })
+            messages.error(request, "Username already taken.")
+            return redirect("register")
 
     return render(request, "womenhealth/register.html")
 

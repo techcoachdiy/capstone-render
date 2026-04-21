@@ -2,12 +2,13 @@
 
 {% block body %}
     <h2>Topics</h2>
-    {% if user.is_staff%}
+    {% if user.is_authenticated and user.is_staff%}
+        <h3>Admin Tools</h3>
         <a href="{% url 'topic_entry' %}">+ New Topic </a>
         <br>
         <a href="{% url 'bulk_foodcomponent_entry' %}">+ Seed Food Components</a>
         <br>
-        <a href="{% url 'register' %}">+ Register Users </a>
+        <a href="{% url 'register' %}">+ Add Users </a>
     {% endif %}
     
     <div class = "container my-5">
